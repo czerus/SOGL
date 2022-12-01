@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "describerr"
+version = "0.1.0"
+description = "Simple Opinionated Git log to changelog"
+authors = ["Krzysztof Czeronko <krzysztof.czeronko@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+loguru = "^0.6.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.1.2"
+
+[tool.poetry.group.dev.dependencies]
+pytest-mock = "^3.10.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
