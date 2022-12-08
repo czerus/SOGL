@@ -1,0 +1,32 @@
+name: Pre Submit Verification for describerr
+
+on:
+  push:
+    branches-ignore:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8.15, 3.9.15, 3.10.9, 3.11.0]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install poetry
+      run: pipx install poetry
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'poetry'
+        cache-dependency-path: 'poetry.lock'
+    - name: Install dependencies
+      run: poetry install
+    - name: Linting
+      run: poetry run python lint.py
+    - name: Test
+      run: |
+        cd tests
+        poetry run pytest --cov=describerr --cov-report html --cov-report term -vv

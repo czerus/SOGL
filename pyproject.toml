@@ -27,7 +27,7 @@ precision = 2
 fail_under = 90.00
 
 [tool.poetry.dependencies]
-python = "^3.8.1"
+python = ">=3.8.1, <4.0"
 loguru = "^0.6.0"
 
 [tool.poetry.dev-dependencies]
