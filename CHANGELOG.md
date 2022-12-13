@@ -1,12 +1,8 @@
 # Changelog
-## Release: v0.1.0 - 13/12/2022
+## Release: v0.2.0 - 13/12/2022
 ### Features:
-* Parse git log output to a CHANGELOG.md *(Krzysztof Czeronko)*
+* Add support for 'proj' prefix *(Krzysztof Czeronko)*
 ### Documentation:
-* Add program description to README.md *(Krzysztof Czeronko)*
-### CI/CD:
-* Add github action for submit verification *(Krzysztof Czeronko)*
-* Add github action for pre submit verification *(Krzysztof Czeronko)*
-* Add linting script *(Krzysztof Czeronko)*
-### Other changes:
-* first commit *(Krzysztof Czeronko)*
+* Update installation instruction *(Krzysztof Czeronko)*
+### Project configuration:
+* Remove .idea config dir *(Krzysztof Czeronko)*
