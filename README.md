@@ -2,16 +2,9 @@
 `describer` is python module for creating release notes from git log output.
 
 # Installation
-Currently only installation from git is supported:
-1. Install [Poetry](https://python-poetry.org/)
-2. Checkout repository:
-    ```bash
-    $ git clone git@github.com:czerus/Describerr.git
-    ```
-3. Install project and all dependencies using poetry:
-    ```bash
-    $ poetry install 
-    ```
+```bash
+$ pip3 install describerr
+```
 
 # Usage
 Typical usage is when preparing release notes user wants to generate changelog. This app
