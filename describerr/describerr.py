@@ -54,6 +54,7 @@ class Describerr:
     * test - testing code
     * ci - CI and CD related code like gitlab/github yaml files
     * revert - commit reverting merged changes
+    * proj - project configuration and setup
     * other - commits that could not be parsed using previously mentioned keys
 
     Commit format that is properly parsed:
@@ -75,6 +76,7 @@ class Describerr:
         "refactor": "Refactoring",
         "test": "Tests",
         "ci": "CI/CD",
+        "proj": "Project configuration",
         "other": "Other changes",
     }
     _IGNORE_REGEXPS = (

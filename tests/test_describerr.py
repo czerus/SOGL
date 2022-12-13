@@ -111,6 +111,16 @@ expected_out = describerr.Commits(
                 breaking=False,
             ),
         ],
+        "proj": [
+            describerr.Commit(
+                raw="proj: Remove obsolete configuration <PM>",
+                prefix="proj",
+                scope=None,
+                topic="Remove obsolete configuration",
+                author="PM",
+                breaking=False,
+            )
+        ],
         "other": [
             describerr.Commit(
                 raw="This commit is created to be unparsable <CommitAuthor2>",
