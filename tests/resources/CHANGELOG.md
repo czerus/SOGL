@@ -27,6 +27,8 @@
 * **[scope3]** I don't like it.... scope3 *(CommitAuthor1)*
 ### Refactoring:
 * What the tigers like *(CommitAuthor2)*
+### Project configuration:
+* Remove obsolete configuration *(PM)*
 ### Other changes:
 * This commit is created to be unparsable *(CommitAuthor2)*
 * (scope1)This commit is created to be unparsable but with scope1 *(CommitAuthor3)*

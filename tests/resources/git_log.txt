@@ -18,3 +18,4 @@ feat: Author with many spaces and tabs              <CommitAuthor1>
 feat: Author inside<CommitAuthor>the subject <AuthorWasInsideSubject No Spaces>
 feat: Author inside <CommitAuthor> the subject separated <AuthorWasInsideSubject With Spaces>
 Merge branch name into branch
+proj: Remove obsolete configuration <PM>

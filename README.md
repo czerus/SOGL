@@ -35,6 +35,7 @@ where:
   * test - testing code
   * ci - CI and CD related code like gitlab/github yaml files
   * revert - commit reverting merged changes
+  * proj - project configuration and setup
 
   If commit does not start with prefix then it is categorized as "other".
   
