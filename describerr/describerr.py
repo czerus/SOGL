@@ -237,7 +237,7 @@ class Describerr:
             f.write(text)
 
 
-if __name__ == "__main__":
+def main():
     import argparse
 
     parser = argparse.ArgumentParser(description="Simple opinionated gitt log to a changelog")
@@ -257,3 +257,7 @@ if __name__ == "__main__":
     describerr = Describerr()
     describerr.parse_commits_into_obj(args.from_tag, args.to_tag)
     describerr.create_changelog(args.version)
+
+
+if __name__ == "__main__":
+    main()

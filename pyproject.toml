@@ -5,6 +5,9 @@ description = "Simple Opinionated git log to a changelog"
 authors = ["Krzysztof Czeronko <krzysztof.czeronko@gmail.com>"]
 license = "MIT"
 
+[tool.poetry.scripts]
+describerr = "describerr.describerr:main"
+
 [tool.isort]
 sections = "FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER"
 known_first_party = "describerr"
