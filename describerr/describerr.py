@@ -2,6 +2,7 @@ import io
 import re
 import shlex
 import subprocess
+import sys
 from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import date
@@ -181,7 +182,9 @@ class Describerr:
         git_command = f'git log {log_range} --pretty="%s <%an>"'
         result = subprocess.run(shlex.split(git_command), capture_output=True)
         logger.info(f"Getting commits using command: {git_command}")
-        result.check_returncode()
+        if result.returncode != 0:
+            logger.error(f"Most probably tag(s) does not exist. Git error:\n{result.stderr.decode()}")
+            sys.exit(result.returncode)
         stdout = result.stdout.decode().strip().split("\n")
         logger.debug(stdout)
         for commit_raw_str in stdout:

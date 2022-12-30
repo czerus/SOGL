@@ -1,6 +1,8 @@
 import os.path
 import subprocess
 
+import pytest
+
 from describerr import describerr
 
 expected_out = describerr.Commits(
@@ -184,6 +186,11 @@ expected_out = describerr.Commits(
 )
 
 
+git_error = b"""fatal: ambiguous argument '0.1.0..HEAD': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'"""
+
+
 def test_changelog_creation(git_log, mocker):
     mocker.patch("describerr.describerr.subprocess.run").side_effect = [
         subprocess.CompletedProcess("args", 0, git_log, "")
@@ -192,6 +199,17 @@ def test_changelog_creation(git_log, mocker):
     d.parse_commits_into_obj("", "HEAD")
     assert dict(d._commits.breaking) == expected_out.breaking
     assert dict(d._commits.generic) == expected_out.generic
+
+
+def test_changelog_creation_git_error(git_log, mocker, caplog):
+    mocker.patch("describerr.describerr.subprocess.run").side_effect = [
+        subprocess.CompletedProcess("args", 128, git_log, git_error)
+    ]
+    d = describerr.Describerr()
+    with pytest.raises(SystemExit) as excinfo:
+        d.parse_commits_into_obj("0.0.0", "HEAD")
+    assert excinfo.value.code == 128
+    assert f"Most probably tag(s) does not exist. Git error:\n{git_error.decode()}" in caplog.messages
 
 
 def test_markdown_creation(mocker, tmpdir, changelog):
