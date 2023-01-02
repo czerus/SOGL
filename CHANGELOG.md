@@ -1,4 +1,4 @@
 # Changelog
-## Release: v0.2.1 - 23/12/2022
-### Fixes:
-* Fix unavailable `describerr` command *(Krzysztof Czeronko)*
+## Release: v0.3.0 - 02/01/2023
+### Features:
+* Display git errors to the user *(Krzysztof Czeronko)*
