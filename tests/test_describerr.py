@@ -215,7 +215,7 @@ def test_changelog_creation_git_error(git_log, mocker, caplog):
 def test_markdown_creation(mocker, tmpdir, changelog):
     d = describerr.Describerr()
     d._commits = expected_out
-    d._CHANGELOG_FILE = os.path.join(tmpdir, "CHANGELOG.md")
+    describerr.Describerr._CHANGELOG_FILE = os.path.join(tmpdir, "CHANGELOG.md")
 
     mocker.patch("describerr.describerr.Describerr._get_current_date").return_value = "06/12/2022"
 
