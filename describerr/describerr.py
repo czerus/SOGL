@@ -68,6 +68,8 @@ class Describerr:
     Commits with `release` prefix or starting with "Merge" word are **ignored**!
     """
 
+    __slots__ = ["_commits"]
+
     _PREFIXES_USE = {
         "feat": "Features",
         "chore": "Chore",
@@ -157,12 +159,12 @@ class Describerr:
         :param release: Release name e.g v1.0.0
         :return: None
         """
-        with open(self._CHANGELOG_FILE, "w") as f:
+        with open(Describerr._CHANGELOG_FILE, "w") as f:
             self.__add_date_and_release(f, release)
             add_breaking_changes = _breaking_changes(self.__add_commits)
             add_breaking_changes(f, self._commits.breaking)
             self.__add_commits(f, self._commits.generic)
-        logger.info(f"Changelog written to {self._CHANGELOG_FILE}")
+        logger.info(f"Changelog written to {Describerr._CHANGELOG_FILE}")
 
     @staticmethod
     def _get_commit_list(from_tag: str, to_tag: str):
