@@ -4,6 +4,7 @@ version = "0.3.0"
 description = "Simple Opinionated git log to a changelog"
 authors = ["Krzysztof Czeronko <krzysztof.czeronko@gmail.com>"]
 license = "MIT"
+readme = "README.md"
 
 [tool.poetry.scripts]
 describerr = "describerr.describerr:main"
