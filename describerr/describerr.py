@@ -25,6 +25,7 @@ class Commit:
     topic: str = None
     author: str = None
     breaking: bool = False
+    hash: str = None
 
 
 commits = Dict[str, List[Commit]]
@@ -68,7 +69,7 @@ class Describerr:
     Commits with `release` prefix or starting with "Merge" word are **ignored**!
     """
 
-    __slots__ = ["_commits"]
+    __slots__ = ["_commits", "_commit_url"]
 
     _PREFIXES_USE = {
         "feat": "Features",
@@ -91,8 +92,9 @@ class Describerr:
     _SCOPE = r"\(?(?P<scope>[\w\s]+)?\)?"
     _BREAKING = r"(?P<breaking>\!)?"
     _TOPIC = r"(?P<topic>.*)"
-    _AUTHOR = r".*\<(?P<author>.*)\>$"
-    _COMMIT_REGEXP = rf"{_PREFIX}{_SCOPE}{_BREAKING}:\s*{_TOPIC}\s+\<"
+    _AUTHOR = r".*\<(?P<author>.*)\>"
+    _HASH = r".*\>\s+(?P<hash>.*)$"
+    _COMMIT_REGEXP = rf"{_PREFIX}{_SCOPE}{_BREAKING}:\s*{_TOPIC}\s+\<.*\>\s"
     _SKIP_WORDS = (
         "release",
         "merge",
@@ -100,6 +102,7 @@ class Describerr:
 
     def __init__(self) -> None:
         self._commits = Commits()
+        self._commit_url = Describerr._get_commit_url()
 
     def parse_commits_into_obj(self, from_tag: str, to_tag: str) -> None:
         """
@@ -139,6 +142,8 @@ class Describerr:
             commit.scope = match_obj.group("scope")
             commit.topic = self._get_topic(match_obj)
             commit.breaking = match_obj.group("breaking") is not None
+        match_hash = re.match(self._HASH, commit_raw_str)
+        commit.hash = match_hash.group("hash")  # hash is always available
         match_author = re.match(self._AUTHOR, commit_raw_str)
         commit.author = match_author.group("author")  # author is always available
         # Set topic for unparsed commits = raw - author
@@ -177,11 +182,12 @@ class Describerr:
         """
         # %an - commit author
         # %s - commit topic
+        # %H - commit hash
         log_range = f"{from_tag}..{to_tag}"
         if not from_tag:
             log_range = to_tag
 
-        git_command = f'git log {log_range} --pretty="%s <%an>"'
+        git_command = f'git log {log_range} --pretty="%s <%an> %H"'
         result = subprocess.run(shlex.split(git_command), capture_output=True)
         logger.info(f"Getting commits using command: {git_command}")
         if result.returncode != 0:
@@ -191,6 +197,24 @@ class Describerr:
         logger.debug(stdout)
         for commit_raw_str in stdout:
             yield commit_raw_str
+
+    @staticmethod
+    def _get_commit_url() -> str:
+        """
+        Get from repository URL of the project on remote repo
+
+        :return: URL of the repo
+        """
+        git_command = "git config --get remote.origin.url"
+        result = subprocess.run(shlex.split(git_command), capture_output=True)
+        logger.info(f"Getting repository url using command: {git_command}")
+        if result.returncode != 0:
+            logger.error(f"Git error:\n{result.stderr.decode()}")
+            sys.exit(result.returncode)
+        stdout = result.stdout.decode().strip()
+        commit_url = f"{stdout}/commit/"
+        logger.info(f"Commits url: {commit_url}")
+        return commit_url
 
     @staticmethod
     def __add_date_and_release(f: io.TextIOWrapper, release: str) -> None:
@@ -222,10 +246,9 @@ class Describerr:
             if prefix_type not in commits_dict:
                 continue
             f.write(f"### {prefix_name}:\n")
-            Describerr._write_commits(f, commits_dict, prefix_type)
+            self._write_commits(f, commits_dict, prefix_type)
 
-    @staticmethod
-    def _write_commits(f, commits_dict: commits, prefix_type: str) -> None:
+    def _write_commits(self, f, commits_dict: commits, prefix_type: str) -> None:
         """
         Write commit in one of formats: topic|raw_string (author).
 
@@ -238,7 +261,7 @@ class Describerr:
             text = "* "
             if commit.scope:
                 text += f"**[{commit.scope}]** "
-            text += f"{commit.topic} *({commit.author})*\n"
+            text += f"{commit.topic} *({commit.author})* [{commit.hash[0:7]}]({self._commit_url}{commit.hash})\n"
             f.write(text)
 
 
