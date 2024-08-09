@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "describerr"
-version = "0.3.0"
+version = "0.4.0"
 description = "Simple Opinionated git log to a changelog"
 authors = ["Krzysztof Czeronko <krzysztof.czeronko@gmail.com>"]
 license = "MIT"
